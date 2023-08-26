@@ -10,6 +10,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - [linux/amd64, amd64]
+          - [linux/arm/v6, armv6]
+          - [linux/arm/v7, armv7]
+          - [linux/arm64, arm64]
 
     steps:
     - name: Checkout
@@ -29,4 +37,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: agente11/github-actions:${{ inputs.version }}-amd64
+        platforms: ${{ matrix.platform[0] }}
+        tags: agente11/github-actions:${{ inputs.version }}-${{ matrix.platform[1] }}
